@@ -248,48 +248,138 @@ Mayor presencia de soluciones orientadas a contenedores y Kubernetes
 El análisis permite a las empresas seleccionar tecnologías adecuadas para sus estrategias de adopción en la nube, priorizando plataformas con mayor madurez, escalabilidad y soporte.
 
 
- PUNTO 4 — PROYECTO CONVOCATORIA MINCIENCIAS
-🎯 Título
-PNEEDIA — Plataforma Nacional Educativa y de Entrenamiento para IA
+## 4- Proyecto Propuesto — Convocatoria MinCiencias
+### 4-a) Propuesta breve del proyecto
+#### Título del proyecto:
+Sistema Inteligente de Detección y Priorización Automática de Emergencias Urbanas mediante IA y Arquitectura Distribuida 
 
-📌 Problema
-Colombia no posee infraestructura propia para entrenamiento de modelos IA avanzados, lo que limita la soberanía tecnológica.
+#### Problema a resolver:
 
-💡 Solución Propuesta
-Diseño de una plataforma basada en OpenStack + GPU clusters + MLflow/Kubeflow para permitir:
+Las entidades de emergencia en ciudades medianas presentan demoras en la atención debido a:
+Falta de priorización automática de incidentes.
+Saturación de canales de reporte (llamadas, redes, sensores).
+Procesamiento centralizado que genera cuellos de botella.
 
-Entrenamiento de IA nacional
+#### Propuesta de solución:
 
-MLOps estandarizado
+Desarrollar un sistema de IA capaz de detectar, clasificar y priorizar incidentes urbanos (accidentes, incendios, derrumbes, emergencias civiles) usando:
+Sensores IoT y fuentes digitales (simuladas o reales).
+Procesamiento distribuido edge computing para reducir latencia.
+RabbitMQ como sistema de mensajería.
+Terraform para desplegar infraestructura reproducible.
+Ansible para automatizar la configuración.
+Un servicio central en la nube (OpenStack o pública) para análisis y visualización.
 
-Banco de datos federado
+### 4-b) README de la solución + Diagrama
+#### Sistema Inteligente de Priorización de Emergencias con IA (Propuesta MinCiencias)
 
-Servicios IA para universidades, empresas y gobierno
+Este repositorio contiene el diseño conceptual, arquitectura y justificación técnica de un sistema basado en IA y comunicaciones digitales para priorizar emergencias urbanas en tiempo real.
 
-🧱 Arquitectura (colocar diagrama aquí)
+#### Descripción general
+
+El sistema permite:
+
+Recoger eventos desde sensores IoT, reportes ciudadanos o fuentes digitales.
+Enviar los datos hacia una cola de mensajes RabbitMQ.
+Procesar los eventos mediante un microservicio de IA que asigna prioridad.
+Visualizar resultados en un panel web para personal de respuesta.
+Desplegar toda la infraestructura con Terraform + Ansible.
+
+#### uitectura General del Sistema
+Diagrama (Mermaid)
+Puedes usar este bloque directamente en GitHub:
 ```
-[Edge Data] → [OpenStack Cloud] → [GPU Cluster] → [Kubeflow/MLflow] → [API Models] → [Usuarios]
-Colocar diagrama aquí:
-./docs/arquitectura.png
+flowchart LR
+  A[Fuentes: Sensores IoT / Reportes / Redes] --> B(Edge Gateway)
+  B -->|Filtrado y Preprocesamiento| C(RabbitMQ Exchange)
+  C --> D{Colas Prioritarias}
+  D --> E[Servicio de IA en Edge]
+  D --> F[Servicio de IA en Cloud]
+  E --> G[Dashboard & API REST]
+  F --> G
+  G --> H[Entidades de Emergencia]
+  
+  subgraph Cloud
+    F
+    G
+  end
+
+  subgraph Edge Local
+    B
+    E
+  end
 ```
+#### Objetivo general
 
-🔮 Tecnologías Futuras Recomendadas
-TinyML
+Diseñar un prototipo funcional que use IA para priorizar incidentes en tiempo real, integrando procesamiento distribuido (edge), infraestructura en la nube y tecnologías de automatización estudiadas en Digitales III.
 
-Federated Learning
+#### Objetivos específicos
 
-LLM locales optimizados
+Integrar una arquitectura híbrida Edge/Cloud.
+Implementar colas de mensajería con RabbitMQ para desacoplar los módulos.
+Entrenar un modelo de IA liviano para clasificar y asignar prioridad a incidentes.
+Desplegar infraestructura reproducible con Terraform.
+Automatizar configuración del sistema con Ansible.
+Probar latencias y efectividad del sistema frente a cargas simuladas.
 
-ONNX + cuantización
+#### Componentes Tecnológicos
+Componente	Tecnología	Función
+Orquestación de infraestructura	Terraform	Crear VMs, redes y servicios en cloud/OpenStack
+Configuración automática	Ansible	Configurar servidores, colas, dependencias
+Mensajería	RabbitMQ	Envío de incidentes y priorización
+IA	Python + modelos ligeros	Clasificación y análisis
+Panel administrativo	Flask / FastAPI	Visualización de eventos priorizados
+Edge gateway	Python / MQTT	Captura de datos y preprocesamiento
+#### Metodología
 
-Serving en Kubernetes
+Simulación de datos desde sensores y reportes digitales.
+Envío al broker RabbitMQ por un gateway edge.
+Procesamiento del modelo AI (uno en edge, otro en cloud).
+Visualización en panel web con API.
+Automatización de infraestructura con Terraform + Ansible.
+Pruebas de latencia y priorización.
 
-Ceph / Lustre para almacenamiento distribuido
+#### Beneficios esperados
 
+Reducción de tiempos de atención en emergencias.
+Priorización automática con IA.
+Procesamiento descentralizado con menor latencia.
+Arquitectura escalable y replicable para más ciudades.
 
-🖼️ Sección general de capturas
-Espacio para imágenes globales del proyecto.
+### 4-c) Tecnologías futuras recomendadas (como experto en Digitales III)
 
-👤 Autor
-[Tu Nombre]
-Contacto: [tu correo]
+#### Edge AI / TinyML
+IA ejecutada directamente en dispositivos pequeños con baja potencia. Permite procesar datos localmente sin depender de la nube, reduciendo latencia y mejorando privacidad. Ideal para sensores, IoT y sistemas en tiempo real.
+
+#### Modelos optimizados para correr en Raspberry, ESP32, Jetson
+Versiones reducidas o cuantizadas de modelos de IA diseñadas para hardware limitado. Se utilizan técnicas como pruning, quantization y distillation para ejecutar inferencias de manera rápida en dispositivos económicos.
+
+#### MLOps (CI/CD para IA)
+Conjunto de prácticas que automatizan todo el ciclo de vida del machine learning: entrenamiento, pruebas, despliegue y monitoreo. Garantiza reproducibilidad, escalabilidad y actualización continua de modelos en producción.
+
+#### BentoML, MLflow, Kubeflow, ONNX Runtime
+Herramientas que facilitan el empaquetado, despliegue, seguimiento y optimización de modelos de IA. Permiten controlar versiones, entrenamientos, métricas y servir modelos en diferentes entornos.
+
+#### Policy-as-Code
+Uso de políticas escritas como código para gobernar infraestructura, seguridad y despliegues de manera automática. Permite validar configuraciones y evitar errores humanos antes de llegar a producción.
+
+#### Gobernanza automática con OPA/Gatekeeper
+Herramientas que aplican reglas de seguridad y cumplimiento en Kubernetes o entornos cloud. Aseguran que las configuraciones cumplen políticas organizacionales mediante validación automática.
+
+#### Observabilidad moderna
+Conjunto de técnicas para monitorear sistemas complejos, incluyendo trazas, logs y métricas. Permite entender el comportamiento de sistemas distribuidos y detectar fallos rápidamente.
+
+#### OpenTelemetry, métricas para IA, detección de drift
+Soluciones para capturar datos de rendimiento y comportamiento de modelos. La detección de drift ayuda a identificar cuándo un modelo deja de ser confiable porque los datos cambian con el tiempo.
+
+#### Plataformas serverless para IA
+Infraestructura que ejecuta inferencias sin administrar servidores, escalando automáticamente según demanda. Reduce costos y facilita despliegues rápidos.
+
+#### Inference endpoints autoscalables (Lambda, Cloud Run, FaaS)
+Servicios que alojan modelos de IA y ajustan automáticamente su capacidad de cómputo. Útiles para cargas impredecibles o picos de tráfico.
+
+#### Kubernetes + Service Mesh
+Arquitectura para gestionar microservicios a gran escala, mejorando tráfico, seguridad y observabilidad.
+
+#### Istio / Linkerd para microservicios con telemetría integrada
+Service mesh que agrega control avanzado del tráfico, métricas detalladas, monitoreo y seguridad entre servicios, sin modificar el código de las aplicaciones.
