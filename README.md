@@ -1,8 +1,5 @@
 # README – Solución Completa del Laboratorio Digitales III
 
-**Autor:**  
-**Fecha:**  
-
 Este repositorio contiene el desarrollo completo de los 4 puntos del laboratorio:  
 1. Análisis de sentimientos por imágenes  
 2. ETL + Dashboard (Streamlit)  
@@ -11,13 +8,13 @@ Este repositorio contiene el desarrollo completo de los 4 puntos del laboratorio
 
 ---
 
-# 🟦 PUNTO 1 — ANÁLISIS DE SENTIMIENTOS POR IMÁGENES  
-## 🎯 Objetivo  
+##  PUNTO 1 — ANÁLISIS DE SENTIMIENTOS POR IMÁGENES  
+###  Objetivo  
 Detectar los sentimientos **feliz**, **bravo**, **triste** usando **MediaPipe**, **hilos**, **mutex** y **semaforización**, implementando un pipeline concurrente de procesamiento de imágenes.
 
 ---
 
-## 📌 Descripción  
+### Descripción  
 El sistema se divide en dos hilos principales:
 
 - **Productor:** captura frames desde la cámara y los agrega a una cola protegida por **mutex**.  
@@ -26,9 +23,9 @@ El sistema se divide en dos hilos principales:
 
 ---
 
-## 🧠 Código Principal (`sentiment_detector.py`)
+### Código Principal (`sentiment_detector.py`)
 
-```python
+```
 import cv2
 import mediapipe as mp
 import threading
@@ -88,22 +85,24 @@ def consumidor():
         cv2.imshow("Detector Sentimientos", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
-# Lanzar hilos
+```
+### Lanzar hilos
+```
 threading.Thread(target=productor).start()
 threading.Thread(target=consumidor).start()
-🖼️ Capturas del Punto 1
-Colocar aquí las imágenes del detector funcionando
+```
+### Capturas del Punto 1
+![Laboratorio-7](1.png)  
+![Laboratorio-7](2.png)  
+![Laboratorio-7](3.png)  
 
 
-
-🟩 PUNTO 2 — ETL + DASHBOARD STREAMLIT
-🎯 Objetivo
+##  PUNTO 2 — ETL + DASHBOARD STREAMLIT
+### Objetivo
 Crear un pipeline ETL sobre la base de datos del proyecto "Túnel carpiano" y construir un dashboard en Streamlit mostrando análisis, KPIs y gráficas.
 
-📌 ETL (etl_pipeline.py)
-python
-Copiar código
+### ETL (etl_pipeline.py)
+```
 import pandas as pd
 from sqlalchemy import create_engine
 
@@ -121,9 +120,9 @@ def run_etl(db_uri):
 
 if __name__ == "__main__":
     run_etl("sqlite:///data/tunel_carpiano.sqlite")
-📊 DASHBOARD STREAMLIT (streamlit_app.py)
-python
-Copiar código
+```
+### DASHBOARD STREAMLIT (streamlit_app.py)
+```
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -138,66 +137,118 @@ st.metric("Fuerza media global", round(df["fuerza_media"].mean(), 2))
 fig, ax = plt.subplots()
 ax.plot(df["fuerza_media"])
 st.pyplot(fig)
-🖼️ Capturas del Punto 2
+```
+### Capturas del Punto 2
+![Laboratorio-7](4.png)  
+![Laboratorio-7](5.png)  
+![Laboratorio-7](6.png)  
+![Laboratorio-7](7.png)  
+![Laboratorio-7](8.png)  
+![Laboratorio-7](9.png)  
 
+## Exploración de Tecnologías — Punto 3
 
-🟨 PUNTO 3 — EXPLORACIÓN TECNOLÓGICA
-Tecnologías Exploradas
-🅰 Terraform
-Infraestructura como código.
+Este documento presenta una exploración clara, concisa y técnica sobre herramientas ampliamente utilizadas en entornos DevOps, automatización, mensajería y computación en la nube.
 
-hcl
-Copiar código
+### 3. Exploración de Tecnologías
+#### a) Terraform
+
+Terraform es una herramienta de Infrastructure as Code (IaC) que permite definir, aprovisionar y gestionar infraestructura mediante archivos declarativos.
+Utiliza el lenguaje HCL (HashiCorp Configuration Language) y permite trabajar con diversos proveedores como AWS, Azure, GCP, OpenStack y más.
+#### Características principales:
+Gestión declarativa de infraestructura
+Control de versiones de la infraestructura
+Idempotencia en despliegues
+Multicloud y extensible con módulos
+Ejemplo básico de código (main.tf):
+```
 provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_instance" "vm1" {
-  ami           = "ami-0c02fb55956c7d316"
+resource "aws_instance" "mi_servidor" {
+  ami           = "ami-0c55b159cbfafe1f0"
   instance_type = "t2.micro"
 }
-📸 Captura aquí
+```
+#### b) Ansible
 
-🅱 Ansible
-Automatización de servidores.
+Ansible es una herramienta de automatización basada en SSH que permite configurar servidores, instalar software y ejecutar tareas sin necesidad de agentes.
+Se basa en archivos YAML llamados playbooks.
 
-yaml
-Copiar código
-- name: Instalar dependencias
-  hosts: all
+#### Características:
+No requiere agentes
+Fácil de usar
+Permite automatizar configuraciones repetitivas
+Muy usado en DevOps y CI/CD
+Ejemplo de playbook:
+
+```
+- name: Instalar Apache
+  hosts: servidores
   tasks:
-    - name: Actualizar paquetes
+    - name: Instalar paquete
       apt:
-        update_cache: yes
-📸 Captura aquí
+        name: apache2
+        state: present
+```
+#### c) RabbitMQ
 
-🅲 RabbitMQ
-Mensajería entre servicios.
+RabbitMQ es un Message Broker basado en colas que permite la comunicación asíncrona entre servicios o aplicaciones.
+Soporta protocolos como AMQP, MQTT y STOMP.
 
-python
-Copiar código
+#### Características:
+
+Envío y recepción de mensajes entre servicios
+Desacoplamiento total entre productores y consumidores
+Garantías de entrega
+Alta escalabilidad con clústeres
+
+Ejemplo de productor en Python:
+```
 import pika
 
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
-channel.queue_declare(queue='sensor')
+channel.queue_declare(queue='hola')
 
-channel.basic_publish(exchange='', routing_key='sensor', body="dato recibido")
+channel.basic_publish(exchange='', routing_key='hola', body='Mensaje de prueba')
 connection.close()
-📸 Captura aquí
+```
+#### d) Tecnologías OpenStack para la Generación de Nubes Propias
 
-🅳 OpenStack
-Nube privada.
-Componentes principales: Nova, Neutron, Glance, Keystone, Cinder.
+OpenStack es una plataforma open-source para construir nubes privadas y públicas.
+Permite administrar recursos computacionales, almacenamiento, redes y más.
 
-📸 Captura aquí
+#### Componentes relevantes:
 
-🅴 Cuadrante de Gartner
-Análisis comparativo de proveedores en IA y cloud (Leaders, Visionaries, Challengers).
+Nova: gestión de máquinas virtuales
+Neutron: redes virtuales
+Cinder: volúmenes persistentes
+Swift: almacenamiento de objetos
+Glance: imágenes de sistemas operativos
+Horizon: dashboard web para administración
 
-📸 Captura aquí
+#### Ejemplo de creación de una instancia vía CLI:
 
-🟧 PUNTO 4 — PROYECTO CONVOCATORIA MINCIENCIAS
+openstack server create --flavor pequeño --image ubuntu22 --network mi_red --key-name mi_llave vm-test
+
+#### e) Análisis del Cuadrante de Gartner sobre Tecnologías Orientadas a la Nube
+
+Gartner publica anualmente el Magic Quadrant, donde clasifica proveedores en cuatro categorías:
+Leaders, Challengers, Visionaries y Niche Players.
+
+#### Tendencias destacadas:
+
+Crecimiento de arquitecturas multicloud
+Aumento de herramientas de gobernanza y seguridad en la nube
+Incremento del uso de IA y automatización para optimizar costos
+Consolidación de líderes como AWS, Azure y Google Cloud
+Mayor presencia de soluciones orientadas a contenedores y Kubernetes
+El análisis permite a las empresas seleccionar tecnologías adecuadas para sus estrategias de adopción en la nube, priorizando plataformas con mayor madurez, escalabilidad y soporte.
+
+
+ PUNTO 4 — PROYECTO CONVOCATORIA MINCIENCIAS
 🎯 Título
 PNEEDIA — Plataforma Nacional Educativa y de Entrenamiento para IA
 
@@ -216,11 +267,11 @@ Banco de datos federado
 Servicios IA para universidades, empresas y gobierno
 
 🧱 Arquitectura (colocar diagrama aquí)
-css
-Copiar código
+```
 [Edge Data] → [OpenStack Cloud] → [GPU Cluster] → [Kubeflow/MLflow] → [API Models] → [Usuarios]
 Colocar diagrama aquí:
 ./docs/arquitectura.png
+```
 
 🔮 Tecnologías Futuras Recomendadas
 TinyML
@@ -235,25 +286,7 @@ Serving en Kubernetes
 
 Ceph / Lustre para almacenamiento distribuido
 
-📂 Estructura del repositorio
-Copiar código
-/
-├── punto1_sentimientos/
-├── punto2_etl_dashboard/
-├── punto3_exploracion/
-├── punto4_minciencias/
-├── docs/
-└── README.md
-✔ Requisitos
-nginx
-Copiar código
-mediapipe
-numpy
-opencv-python
-streamlit
-pandas
-sqlalchemy
-matplotlib
+
 🖼️ Sección general de capturas
 Espacio para imágenes globales del proyecto.
 
