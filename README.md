@@ -145,6 +145,52 @@ st.pyplot(fig)
 ![Laboratorio-7](7.png)  
 ![Laboratorio-7](8.png)  
 ![Laboratorio-7](9.png)  
+### Ejemplo aplicado al túnel Arpiano
+
+ Imagina que tienes 2 sensores de presión en una maqueta de ala:
+
+#### ACORR
+
+Cuando se analiza EMG o conducción nerviosa, la autocorrelación ayuda a:
+
+Ver si los impulsos nerviosos mantienen un patrón normal.
+
+Identificar si hay irregularidad en la conducción debida a compresión del nervio mediano.
+
+Analizar si hay pérdida de sincronía muscular.
+#### XCORR
+
+Se usa cuando se comparan:
+
+Dos músculos (por ejemplo, flexor superficial vs flexor profundo)
+
+Mano afectada vs mano sana
+
+Señal nerviosa antes y después del túnel carpiano
+
+Actividad de dos dedos para evaluar sincronización motora
+
+Permite ver si hay:
+
+Retardo en conducción nerviosa
+
+Pérdida de coordinación muscular
+
+Desfase entre sensores debido a compresión del nervio
+
+#### PSD
+
+Para qué sirve en túnel carpiano
+
+Muy usada en EMG y vibraciones musculares porque permite identificar:
+
+Fatiga muscular
+
+Cambios en el espectro por lesión del nervio
+
+Falta de reclutamiento de fibras musculares
+
+Frecuencias típicas de temblores o vibración involuntaria
 
 ## Exploración de Tecnologías — Punto 3
 
