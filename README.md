@@ -1,3 +1,5 @@
+# Elaborado por Rodian Garay Y Mariana Lomabana :)
+
 # README – Solución Completa del Laboratorio Digitales III
 
 Este repositorio contiene el desarrollo completo de los 4 puntos del laboratorio:  
